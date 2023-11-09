@@ -1,17 +1,31 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app">
+    <SearchVideo @search-videos="updateVideos" />
+    <ShowVideo :searchQuery="searchQuery" />
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import ShowVideo from './components/ShowVideo.vue';
+import SearchVideo from './components/SearchVideo.vue';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
-}
+    ShowVideo,
+    SearchVideo,
+  },
+  data() {
+    return {
+      searchQuery: '',
+    };
+  },
+  methods: {
+    updateVideos(query) {
+      this.searchQuery = query;
+    },
+  },
+};
 </script>
 
 <style>
