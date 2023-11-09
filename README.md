@@ -24,6 +24,7 @@ npm run lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 
-### Librairies
+### npm librairies
  - gapi
  - axios
+ - dotenv
