@@ -1,29 +1,22 @@
 <template>
-  <div id="app">
-    <SearchVideo @search-videos="updateVideos" />
-    <ShowVideo :searchQuery="searchQuery" />
-  </div>
+  <Themes></Themes>
 </template>
 
 <script>
-import ShowVideo from './components/ShowVideo.vue';
-import SearchVideo from './components/SearchVideo.vue';
+import Themes from './components/Themes.vue';
+
 
 export default {
   name: 'App',
   components: {
-    ShowVideo,
-    SearchVideo,
-  },
+    Themes,
+},
   data() {
     return {
-      searchQuery: '',
+
     };
   },
   methods: {
-    updateVideos(query) {
-      this.searchQuery = query;
-    },
   },
 };
 </script>

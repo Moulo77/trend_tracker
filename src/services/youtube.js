@@ -1,24 +1,55 @@
 import axios from 'axios';
 
-const apiKey = process.env.API_KEY;
+const apiKey = "AIzaSyDc4rHZ7zCiaFa4gkIfdvDGj1FblvVCqF0";
 const baseUrl = 'https://www.googleapis.com/youtube/v3';
 
-export const fetchVideos = async (query) =>{
-    const url = `${baseUrl}/search`;
+export const fetchVideos = async (categoryId = '') => {
+    const url = `${baseUrl}/videos`;
 
-    try{
+    try {
         const response = await axios.get(url, {
             params: {
                 key: apiKey,
                 part: 'snippet',
-                maxResults: 5,
-                q: query,
-                type: 'video'
+                chart: 'mostPopular',
+                regionCode: 'FR',
+                maxResults: 50,
+                videoCategoryId: categoryId,
             },
         });
-        return response.data.items;
-    }catch (error){
+
+        if (response.status >= 200 && response.status < 300) {
+            return response.data.items;
+        } else {
+            console.error(`Error fetching videos. Status: ${response.status}`);
+            return [];
+        }
+    } catch (error) {
         console.error("Error fetching videos", error);
-        return;
+        return [];
     }
-}
+};
+
+export const fetchVideoCategories = async () => {
+    const url = `${baseUrl}/videoCategories`;
+
+    try {
+        const response = await axios.get(url, {
+            params: {
+                key: apiKey,
+                part: 'snippet',
+                regionCode: 'FR',
+            },
+        });
+
+        if (response.status >= 200 && response.status < 300) {
+            return response.data.items;
+        } else {
+            console.error(`Error fetching video categories. Status: ${response.status}`);
+            return [];
+        }
+    } catch (error) {
+        console.error("Error fetching video categories", error);
+        return [];
+    }
+};
