@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- Header Section -->
     <div class="header">
       <div class="theme-selector">
         <label for="themeSelect" class="select-label">Choisir un thème:</label>
@@ -12,6 +13,8 @@
         </div>
       </div>
     </div>
+
+    <!-- Videos Section -->
     <div v-if="filteredVideos.length > 0">
       <p>Vidéos en tendance pour la catégorie "{{ selectedThemeTitle }}"</p>
       <div class="video-grid">
@@ -24,10 +27,12 @@
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
           ></iframe>
-          <p>{{ video.snippet.title }}</p>
+          <router-link :to="{ path: '/videos/'+ video.id}">{{ video.snippet.title }}</router-link>
         </div>
       </div>
     </div>
+
+    <!-- No Videos Message -->
     <p v-else>Aucune vidéos disponible pour cette catégorie</p>
   </div>
 </template>
@@ -41,11 +46,12 @@ export default {
     return {
       videos: [],
       selectedTheme: '',
-      selectedThemeTitle: '', // Add this line to track the selected theme title
+      selectedThemeTitle: '', 
       videoCategories: [],
     };
   },
   methods: {
+    // Fetch videos based on the selected theme
     async fetchVideosForTheme() {
       if (this.selectedTheme) {
         try {
@@ -63,6 +69,7 @@ export default {
         this.selectedThemeTitle = ''; // Clear the title when no theme is selected
       }
     },
+    // Fetch video categories during component initialization
     async fetchVideoCategories() {
       try {
         const categories = await fetchVideoCategories();
@@ -71,20 +78,27 @@ export default {
         console.error('Error fetching video categories', error);
       }
     },
+    // Navigate to video details page
+    goToVideoDetails(videoId) {
+      this.$router.push(`/videos/${videoId}`);
+    },
   },
   computed: {
+    // Use a computed property for filtered videos
     filteredVideos() {
       return this.videos;
     },
   },
+  // Fetch video categories and videos during component mount
   mounted() {
     this.fetchVideoCategories();
-    this.fetchVideosForTheme(); // Call the function during mount to display videos based on the default theme
+    this.fetchVideosForTheme();
   },
 };
 </script>
 
 <style scoped>
+/* Add some styles to enhance the appearance */
 .theme-selector {
   margin-bottom: 20px;
 }
@@ -138,6 +152,8 @@ export default {
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 8px;
+  /* Add some box shadow for a lifted appearance */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 iframe {
