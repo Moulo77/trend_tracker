@@ -53,3 +53,28 @@ export const fetchVideoCategories = async () => {
         return [];
     }
 };
+
+export const fetchVideoDetails = async (videoId) => {
+    const url = `${baseUrl}/videos`;
+
+    try {
+        const response = await axios.get(url, {
+            params: {
+                key: apiKey,
+                part: 'snippet,statistics',
+                id: videoId,
+            },
+        });
+
+        if (response.status >= 200 && response.status < 300) {
+            const videoDetails = response.data.items[0];
+            return videoDetails;
+        } else {
+            console.error(`Error fetching video details. Status: ${response.status}`);
+            return null;
+        }
+    } catch (error) {
+        console.error("Error fetching video details", error);
+        return null;
+    }
+};
